@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "card-validator": "^9.0.0",
     "next": "14.1.0",
     "react": "^18",
     "react-credit-card-input": "^1.1.5",
     "react-dom": "^18",
     "react-icons": "^5.0.1",
     "react-select": "^5.8.0",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "sweetalert2": "^11.10.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

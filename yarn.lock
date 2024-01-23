@@ -750,6 +750,13 @@ caniuse-lite@^1.0.30001565, caniuse-lite@^1.0.30001578, caniuse-lite@^1.0.300015
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001579.tgz#45c065216110f46d6274311a4b3fcf6278e0852a"
   integrity sha512-u5AUVkixruKHJjw/pj9wISlcMpgFWzSrczLZbrqBSxukQixmg0SJ5sZTpvaFvxU0HoQKd4yoyAogyrAz9pzJnA==
 
+card-validator@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/card-validator/-/card-validator-9.0.0.tgz#bc3be812e84221e1660c2014a6dfbdba0cb695b5"
+  integrity sha512-ojtiv2CCv+R8EZsQRa76XQR5E5pd8nxHeNVcGGYfp/cL0im7PubQs3KiHs+53oCK/q50Jkd0CIQ+FmFfM2oQQQ==
+  dependencies:
+    credit-card-type "^9.1.0"
+
 chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -841,6 +848,11 @@ credit-card-type@6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/credit-card-type/-/credit-card-type-6.3.0.tgz#6e6c13e7e592f83b067c24429486a4f250eaa030"
   integrity sha512-YGFDqy9GQcJqozJGPXdTgb11s/WavF7NCC/i2ZjmsvzliMPjNhoKxB6oF/gXXZoug5xZ+qoeqlCoOEmA+WrlaQ==
+
+credit-card-type@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/credit-card-type/-/credit-card-type-9.1.0.tgz#54dd96c93b6579623e9c8656e6798fc2b93f5f05"
+  integrity sha512-CpNFuLxiPFxuZqhSKml3M+t0K/484pMAnfYWH14JoD7OZMnmC0Lmo+P7JX9SobqFpRoo7ifA18kOHdxJywYPEA==
 
 cross-spawn@^7.0.0, cross-spawn@^7.0.2:
   version "7.0.3"
@@ -2760,6 +2772,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+sweetalert2@^11.10.4:
+  version "11.10.4"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.10.4.tgz#48fc0c21f008f4d4f7c92da6a96c0fde33148d64"
+  integrity sha512-MOVRuEW/yQsyzgkaiHqAJcYKxW3vhtE5o3Skp6vZdyJejCOWo4FOicbjRfvqHAXTyTMuwDHA+0lYbO6BiHl1Gw==
 
 tailwindcss@^3.3.0:
   version "3.4.1"

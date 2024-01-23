@@ -1,4 +1,4 @@
-import CreditCard from './components/CreditCard/CreditCard';
+import CreditCard from '../components/CreditCard/CreditCard';
 
 export default function Home() {
   return <CreditCard />;

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import CreditCardInput from 'react-credit-card-input';
+import Select from 'react-select';
+import countries from '../../utils/countries.json';
 
 const CreditCard = () => {
 
@@ -9,7 +11,24 @@ const CreditCard = () => {
     const [expiryDate, setExpiryDate] = useState(null);
     const [CVCNumber, setCVCNumber] = useState(null);
     const [country, setCountry] = useState(null);
+    const [selectedCountry, setSelectedCountry] = useState('');
 
+    const countriesList = JSON.parse(JSON.stringify(countries));
+    const formattedCountries = countriesList.map((country) => ({ label: country.name, value: country.code }));
+
+    const handleErrors = (e) => {
+      if (e) {
+        const { error: message, inputName } = e;
+      } else {
+        console.log('now store in session');
+      }
+
+    }
+
+    useEffect(() => {
+      console.log('selectedCountry: ', selectedCountry.label);
+    }, [selectedCountry])
+    
     useEffect(() => {
         if (cardNumber) console.log('cardNumber: ', cardNumber);
         console.log('expiryDate: ', expiryDate);
@@ -34,12 +53,22 @@ const CreditCard = () => {
               value: CVCNumber,
               onChange: (e) => setCVCNumber(e.target.value),
             }}
+            onError={(error) => handleErrors(error)}
           />
-          <div className={`bg-[#f2dedd] rounded-md w-[60px] h-[60px]`}></div>
+          <div className={`bg-[#f2dedd] rounded-md w-[80px] h-[80px]`}></div>
         </div>
-        <div className={`absolute w-full left-0 bottom-[50px] flex`}>
-          <div className={`w-[120px] h-[30px] bg-[#f2dedd] rounded-md mx-4`}></div>
-          <div className={`w-[120px] h-[30px] bg-[#f2dedd] rounded-md mx-2`}></div>
+        <div className={`absolute w-full max-w-[79%] left-0 bottom-[65px] flex items-center pl-[16px]`}>
+          <div className={`w-[60px] h-[38px] bg-[#f2dedd] rounded-md mr-auto`}></div>
+          <Select 
+            options={formattedCountries}
+            styles={{
+              control: (styles) => ({
+                ...styles,
+                width: '260px',
+              })
+            }}
+            onChange={setSelectedCountry}
+          />
         </div>
       </div>
     )
