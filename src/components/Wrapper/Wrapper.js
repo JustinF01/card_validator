@@ -4,12 +4,8 @@ import { useReducer } from "react";
 import { AppContext } from "@/context/appContext";
 
 const initialState = {
-    blacklist: [
-        { name: 'South Africa' },
-        { name: 'Portugal' },
-        { name: 'United States of America' }
-    ],
-    newCardAdded: '',
+    blacklist: [],
+    newCardAdded: false,
   };
 
 const reducer = (state, action) => {
@@ -17,7 +13,7 @@ const reducer = (state, action) => {
       case 'editList':
         return {...state, blacklist: action.payload}
       case 'addNewCard':
-        return { ...state, newCardAdded: action.payload }
+        return { ...state, newCardAdded: !state.newCardAdded }
       default:
         return state;
     }

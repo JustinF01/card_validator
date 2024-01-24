@@ -21,8 +21,6 @@ const CreditCard = () => {
     const countriesList = JSON.parse(JSON.stringify(countries));
     const formattedCountries = countriesList.map((country) => ({ label: country.name, value: country.code }));
 
-    console.log('selectedCountry: ', selectedCountry);
-
     const validateNumber = useCallback(() => {
       if (selectedCountry === '') {
         Swal.fire({
@@ -63,7 +61,7 @@ const CreditCard = () => {
           validCardsArray.push(cardNumber);
           const mint = validCardsArray.join();
           sessionStorage.setItem('valid_card_numbers', mint);
-          dispatch({type: 'addNewCard', payload: cardNumber});
+          dispatch({type: 'addNewCard'});
           Swal.fire({
             text: 'Valid Card Saved',
             icon: 'success',
@@ -90,7 +88,7 @@ const CreditCard = () => {
       setCVCNumber('');
       setExpiryDate('');
       
-    }, [blacklist, cardNumber, selectedCountry]);
+    }, [blacklist, cardNumber, dispatch, selectedCountry]);
 
     const handleErrors = (e) => {
       const { error: message, inputName } = e;
