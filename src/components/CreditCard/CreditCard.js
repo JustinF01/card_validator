@@ -1,9 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import CreditCardInput from 'react-credit-card-input';
 import Select from 'react-select';
 import countries from '../../utils/countries.json';
+import Swal from 'sweetalert2';
+import useAppContext from '@/hooks/useAppContext';
+
+const valid = require("card-validator");
 
 const CreditCard = () => {
 
@@ -12,29 +16,108 @@ const CreditCard = () => {
     const [CVCNumber, setCVCNumber] = useState(null);
     const [country, setCountry] = useState(null);
     const [selectedCountry, setSelectedCountry] = useState('');
+    const { blacklist, dispatch } = useAppContext();
 
     const countriesList = JSON.parse(JSON.stringify(countries));
     const formattedCountries = countriesList.map((country) => ({ label: country.name, value: country.code }));
 
-    const handleErrors = (e) => {
-      if (e) {
-        const { error: message, inputName } = e;
-      } else {
-        console.log('now store in session');
+    console.log('selectedCountry: ', selectedCountry);
+
+    const validateNumber = useCallback(() => {
+      if (selectedCountry === '') {
+        Swal.fire({
+          title: 'Please select a country',
+          icon: 'info',
+          text: 'There is no country selected.',
+        });
+        return;
       }
 
+      const blacklisted = blacklist.find((item) => item.name === selectedCountry.label);
+      const isBlacklisted = blacklisted !== undefined;
+
+      if (isBlacklisted) {
+        Swal.fire({
+          title: 'Blacklisted Country',
+          icon: 'Error',
+          text: 'This country is blacklisted.',
+        });
+        setCardNumber('');
+        setCVCNumber('');
+        setExpiryDate('');
+        return;
+      }
+ 
+      const numberValidation = valid.number(cardNumber);
+      if (numberValidation.isValid) {
+        // save to session storage
+        const validCards = sessionStorage.getItem('valid_card_numbers');
+        let validCardsArray = [];
+        if (validCards) {
+          validCardsArray = validCards.split(',');
+        }
+
+        const found = validCardsArray.find((card) => card === cardNumber);
+        if ( !found ) {
+          // number does not exist
+          validCardsArray.push(cardNumber);
+          const mint = validCardsArray.join();
+          sessionStorage.setItem('valid_card_numbers', mint);
+          dispatch({type: 'addNewCard', payload: cardNumber});
+          Swal.fire({
+            text: 'Valid Card Saved',
+            icon: 'success',
+            text: 'Card Number captured successfully',
+          });
+          
+        } else {
+          Swal.fire({
+            text: 'Card Already Saved',
+            icon: 'info',
+            text: 'Card Number has already been captured.',
+          });
+        }
+        
+
+      } else {
+        Swal.fire({
+          text: 'Card Not Valid',
+          icon: 'error',
+          text: 'Card Number is not valid.',
+        });
+      }
+      setCardNumber('');
+      setCVCNumber('');
+      setExpiryDate('');
+      
+    }, [blacklist, cardNumber, selectedCountry]);
+
+    const handleErrors = (e) => {
+      const { error: message, inputName } = e;
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        text: `${message}`,
+      });
     }
 
-    useEffect(() => {
-      console.log('selectedCountry: ', selectedCountry.label);
-    }, [selectedCountry])
+    const handleCountryAddition = (e) => {
+      setSelectedCountry(e);
+      validateNumber();
+    }
     
     useEffect(() => {
-        if (cardNumber) console.log('cardNumber: ', cardNumber);
-        console.log('expiryDate: ', expiryDate);
-        console.log('CVCNumber: ', CVCNumber);
-        console.log('country: ', country);
-    }, [cardNumber, CVCNumber, expiryDate, country])
+        if (CVCNumber?.length === 3) {
+          validateNumber();
+        }
+    }, [CVCNumber, validateNumber, selectedCountry])
+
+    useEffect(() => {
+      // set session cookie
+      if (window) {
+        sessionStorage.setItem('valid_card_numbers', '');
+      }
+    }, [])
   
     return (
         <div className={`w-[100%] max-w-[550px] bg-gradient-to-r from-[#ffaa35] to-[#ffc536] rounded-[33px] h-[340px] relative shadow-lg shadow-black/20`}>
@@ -54,20 +137,23 @@ const CreditCard = () => {
               onChange: (e) => setCVCNumber(e.target.value),
             }}
             onError={(error) => handleErrors(error)}
+            dangerTextStyle={{display: 'none'}}
           />
           <div className={`bg-[#f2dedd] rounded-md w-[80px] h-[80px]`}></div>
         </div>
-        <div className={`absolute w-full max-w-[79%] left-0 bottom-[65px] flex items-center pl-[16px]`}>
+        <div className={`absolute w-full max-w-[78.5%] left-0 bottom-[90px] flex items-center pl-[16px]`}>
           <div className={`w-[60px] h-[38px] bg-[#f2dedd] rounded-md mr-auto`}></div>
           <Select 
             options={formattedCountries}
+            defaultValue={selectedCountry}
             styles={{
               control: (styles) => ({
                 ...styles,
                 width: '260px',
               })
             }}
-            onChange={setSelectedCountry}
+            onChange={handleCountryAddition}
+            placeholder="Select a country"
           />
         </div>
       </div>

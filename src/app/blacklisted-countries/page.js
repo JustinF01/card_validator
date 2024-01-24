@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import useAppContext from "@/hooks/useAppContext";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 export default function Page() {
 
@@ -28,20 +28,23 @@ export default function Page() {
   const handleAdd = (e) => {
     if (e.key === 'Enter') {
       const update = [...blacklist];
-      if (update.find((item) => item.name === e.target.value)) {
+      const found = update.find((item) => item.name.toLowerCase() === e.target.value.toLowerCase());
+      console.log('found: ', found);
+      if (found) {
         // name is already there
         Swal.fire({
-          title: 'Name already exists!',
-          text: `already exist in blacklist`,
-          icon: 'error',
-          confirmButtonText: 'OK'
+          title: 'Country is blacklisted',
+          icon: 'info',
+          text: 'This country is already added.'
         });
+        setNewCountry('');
 
       } else {
         const added = [...update, { name: e.target.value }];
         dispatch({type: 'editList', payload: added});
+        
       }
-      setNewCountry('');
+      
     }
     
   }
